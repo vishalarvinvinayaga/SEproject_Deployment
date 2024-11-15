@@ -1,0 +1,6 @@
+.appStyle {
+    background-image: url('/src/assets/Florida_Atlantic_University_Logo.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}

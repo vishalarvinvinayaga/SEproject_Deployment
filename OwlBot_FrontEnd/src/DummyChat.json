@@ -1,0 +1,30 @@
+[
+    {
+        "sender": "bot",
+        "text": "Hello! How can I assist you today?"
+    },
+    {
+        "sender": "user",
+        "text": "User Test Message 1"
+    },
+    {
+        "sender": "bot",
+        "text": "Bot Test Message 1"
+    },
+    {
+        "sender": "user",
+        "text": "User Test Message 2"
+    },
+    {
+        "sender": "bot",
+        "text": "Bot Test Message 2"
+    },
+    {
+        "sender": "user",
+        "text": "User Test Message 3"
+    },
+    {
+        "sender": "bot",
+        "text": "Bot Test Message 3"
+    }
+]

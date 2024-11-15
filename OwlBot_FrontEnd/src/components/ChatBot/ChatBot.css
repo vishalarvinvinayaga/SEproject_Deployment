@@ -1,0 +1,60 @@
+/* styles.css or your component's CSS file */
+
+.loading-dots {
+    display: flex;
+    justify-content: flex-start;
+    /* Align to the left */
+    align-items: center;
+    margin: 3rem 0;
+    /* Space around the loading dots */
+}
+
+.left-aligned {
+    margin-left: 10px;
+    /* Space from the left */
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    margin: 0 5px;
+    /* Space between dots */
+    border-radius: 50%;
+    background-color: rgba(0, 51, 102);
+    /* Color of the dots */
+    animation: bounce 0.3s infinite alternate;
+    /* Animation */
+}
+
+/* Animation for the bouncing dots */
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+.dot:nth-child(1) {
+    animation-delay: 0s;
+    /* First dot */
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.1s;
+    /* Second dot */
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.2s;
+    /* Third dot */
+}
+
+.appStyle {
+    background-image: url('/src/assets/Florida_Atlantic_University_Logo.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
