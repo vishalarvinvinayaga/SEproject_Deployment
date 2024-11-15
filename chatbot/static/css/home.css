@@ -1,0 +1,114 @@
+/* Overall layout styling */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  /* Left Sidebar */
+  .sidebar-left {
+    background-color: rgb(149, 7, 7); /* Red color */
+    padding: 20px;
+    color: white;
+  }
+  
+  .sidebar-left h2 {
+    font-size: 1.5rem;
+  }
+  
+  .sidebar-left p {
+    font-size: 1rem;
+  }
+  
+  /* Main Chat Section */
+  .main-chat {
+    background-color: #1e3d59; /* Navy color */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  #chat-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-bottom: 10px;
+  }
+  
+  /* Chat bubbles for user and bot */
+  .user-message, .bot-response {
+    background-color: white;
+    color: black;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-message {
+    align-self: flex-start;
+  }
+  
+  .bot-response {
+    align-self: flex-end;
+  }
+  
+  /* Chat input styling */
+  #query-form {
+    display: flex;
+    margin-top: 20px;
+  }
+  
+  #user-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  button[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    background-color: #3498db; /* Button blue color */
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Right Sidebar */
+  .sidebar-right {
+    background-color: rgb(149, 7, 7);
+    padding: 20px;
+    color: black;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .username {
+    font-weight: bold;
+  }
+  
+  .logout-dropdown {
+    margin-left: 10px;
+    padding: 5px;
+  }
+  

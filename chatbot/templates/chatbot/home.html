@@ -1,0 +1,123 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>EECS Chatbot</title>
+  </head>
+  <body>
+    <h1>EECS Department Chatbot</h1>
+    <form id="query-form" method="POST">
+      {% csrf_token %}
+      <input
+        type="text"
+        name="user_input"
+        placeholder="Enter your question"
+        required
+      />
+      <button type="submit">Ask</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+      document.querySelector("#query-form").onsubmit = async function (event) {
+        event.preventDefault();
+        const userInput = document.querySelector(
+          'input[name="user_input"]'
+        ).value;
+        const response = await fetch("{% url 'chatbot:chatbot_query' %}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+          body: new URLSearchParams({ user_input: userInput }),
+        });
+        const data = await response.json();
+        document.querySelector("#response").innerText =
+          data.response || "No response found.";
+      };
+    </script>
+  </body>
+</html> -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>EECS Chatbot</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Left Sidebar for Live News -->
+      <div class="sidebar-left">
+        <h2>Live News from FAU</h2>
+        <p>News will be displayed here if API access is available.</p>
+      </div>
+
+      <!-- Main Chatbot Section -->
+      <div class="main-chat">
+        <div id="chat-area"></div>
+
+        <!-- Chat Input -->
+        <form id="query-form" method="POST">
+          {% csrf_token %}
+          <input
+            type="text"
+            name="user_input"
+            id="user-input"
+            placeholder="Ask your question..."
+            required
+          />
+          <button type="submit">Ask</button>
+        </form>
+      </div>
+
+      <!-- Right Sidebar for Profile and Links -->
+      <div class="sidebar-right">
+        <div class="profile">
+          <img
+            src="{% static 'images/profile_placeholder.png' %}"
+            alt="Profile Picture"
+            class="profile-pic"
+          />
+          <span class="username">User Name</span>
+          <select class="logout-dropdown">
+            <option>Logout</option>
+            <option>Settings</option>
+          </select>
+        </div>
+        <h2>Important AI Links</h2>
+        <p>Here you can provide links or content for AI learning resources.</p>
+      </div>
+    </div>
+
+    <script>
+      document.querySelector("#query-form").onsubmit = async function (event) {
+        event.preventDefault();
+        const userInput = document.querySelector("#user-input").value;
+        const response = await fetch("{% url 'chatbot:chatbot_query' %}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+          body: new URLSearchParams({ user_input: userInput }),
+        });
+        const data = await response.json();
+
+        // Display user question and bot response in the chat area
+        const chatArea = document.getElementById("chat-area");
+        if (userInput) {
+          chatArea.innerHTML += `<div class="user-message">${userInput}</div>`;
+        }
+        if (data.response) {
+          chatArea.innerHTML += `<div class="bot-response">${data.response}</div>`;
+        }
+        document.querySelector("#user-input").value = ""; // Clear input
+      };
+    </script>
+  </body>
+</html>
