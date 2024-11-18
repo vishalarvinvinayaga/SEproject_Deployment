@@ -1,8 +1,9 @@
 import axios from "axios";
-import DummyChat from "../DummyChat.json"
 
-export const sendChatMessage = async (message: string) => {
-    const response = await axios.post("/api/chat", { message });
+export const sendChatMessage = async (user_input: string) => {
+    const response = await axios.post("http://localhost:8000/api/query/", {
+        user_input,
+    });
     return response.data;
 };
 
@@ -10,11 +11,3 @@ export const sendChatMessage = async (message: string) => {
 //     const response = await axios.get("/api/chat");
 //     return response.data;
 // };
-
-export const fetchChatMessages = async () => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(DummyChat);
-        }, 1000);
-    });
-};

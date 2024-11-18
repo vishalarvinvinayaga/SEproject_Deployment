@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { sendChatMessage, fetchChatMessages } from "../api/chatApi"; // Assume you have a function to fetch messages
+import { sendChatMessage } from "../api/chatApi"; // Assume you have a function to fetch messages
 
 interface Message {
     sender: "bot" | "user";
@@ -26,29 +26,29 @@ export const sendMessageToBackend = createAsyncThunk(
     async (message: string, { rejectWithValue }) => {
         try {
             const data = await sendChatMessage(message);
-            return data;
+            return data.response;
         } catch (error) {
             return rejectWithValue(
-                error.response?.data || "Failed to send message"
+                error.response?.data.error || "Failed to send message"
             );
         }
     }
 );
 
 // Async thunk to fetch messages from the backend
-export const fetchMessagesFromBackend = createAsyncThunk(
-    "chat/fetchMessages",
-    async (_, { rejectWithValue }) => {
-        try {
-            const messages = await fetchChatMessages(); // API call to fetch messages
-            return messages;
-        } catch (error) {
-            return rejectWithValue(
-                error.response?.data || "Failed to fetch messages"
-            );
-        }
-    }
-);
+// export const fetchMessagesFromBackend = createAsyncThunk(
+//     "chat/fetchMessages",
+//     async (_, { rejectWithValue }) => {
+//         try {
+//             const messages = await fetchChatMessages(); // API call to fetch messages
+//             return messages;
+//         } catch (error) {
+//             return rejectWithValue(
+//                 error.response?.data || "Failed to fetch messages"
+//             );
+//         }
+//     }
+// );
 
 const chatSlice = createSlice({
     name: "chat",
@@ -72,18 +72,18 @@ const chatSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             })
-            .addCase(fetchMessagesFromBackend.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchMessagesFromBackend.fulfilled, (state, action) => {
-                state.loading = false;
-                state.messages = action.payload;
-            })
-            .addCase(fetchMessagesFromBackend.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload as string;
-            });
+            // .addCase(fetchMessagesFromBackend.pending, (state) => {
+            //     state.loading = true;
+            //     state.error = null;
+            // })
+            // .addCase(fetchMessagesFromBackend.fulfilled, (state, action) => {
+            //     state.loading = false;
+            //     state.messages = action.payload;
+            // })
+            // .addCase(fetchMessagesFromBackend.rejected, (state, action) => {
+            //     state.loading = false;
+            //     state.error = action.payload as string;
+            // });
     },
 });
 

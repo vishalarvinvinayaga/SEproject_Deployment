@@ -10,11 +10,7 @@ import {
 } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
-import {
-    addUserMessage,
-    fetchMessagesFromBackend,
-    sendMessageToBackend,
-} from "../../redux/chatSlice";
+import { addUserMessage, sendMessageToBackend } from "../../redux/chatSlice";
 import ChatMessage from "../ChatMessage/ChatMessage";
 import { Link } from "react-router-dom";
 import "./ChatBot.css";
@@ -30,14 +26,14 @@ const ChatBot = () => {
     const handleSendMessage = () => {
         if (input.trim() !== "") {
             dispatch(addUserMessage(input));
-            dispatch(sendMessageToBackend(input));
+            dispatch(sendMessageToBackend(input))
+                .unwrap()
+                .catch(() => {
+                    console.error("Error sending message to backend");
+                });
             setInput("");
         }
     };
-
-    useEffect(() => {
-        dispatch(fetchMessagesFromBackend());
-    }, [dispatch]);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -68,18 +64,6 @@ const ChatBot = () => {
                             <h5 className="mb-0 flex-grow-1 text-center">
                                 FAU OwlBot
                             </h5>
-                            <Link
-                                to="/admin/login"
-                                style={{ textDecoration: "none" }}
-                            >
-                                <Button
-                                    variant="outline-light"
-                                    size="sm"
-                                    className="ml-auto"
-                                >
-                                    Admin Login
-                                </Button>
-                            </Link>
                         </Card.Header>
                         <Card.Body
                             className="d-flex flex-column"

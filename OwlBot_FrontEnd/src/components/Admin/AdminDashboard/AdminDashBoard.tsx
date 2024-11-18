@@ -36,7 +36,7 @@ const AdminDashboard = () => {
                 </Button>
             </Card>
 
-            <Tab.Container defaultActiveKey="scraping">
+            <Tab.Container defaultActiveKey="home">
                 <Nav variant="tabs">
                     <Nav.Item>
                         <Nav.Link eventKey="home">Home</Nav.Link>

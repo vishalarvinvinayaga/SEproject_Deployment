@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required  # type: ignore
 from django.contrib import messages  # type: ignore
 from .query_handler import get_response
 
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt  # type: ignore
 import json
 
 # # Example in chatbot/views.py
@@ -15,18 +15,31 @@ import json
 # def chatbot_home(request):
 #     return render(request, 'chatbot/home.html')
 
-# def chatbot_query(request):
-#     # This function handles AJAX POST requests with user queries
-#     if request.method == 'POST':
-#         user_query = request.POST.get('user_input')  # Get user input from POST data
-#         if user_query:
-#             chat_history = request.session.get("chat_history", [])  # Get chat history from session
-#             response = get_response(user_query, chat_history)  # Process the query
-#             chat_history.append({"user": user_query, "assistant": response})  # Update chat history
-#             request.session["chat_history"] = chat_history  # Save updated chat history in session
-#             return JsonResponse({"response": response})
-#         return JsonResponse({'error': 'No input provided'}, status=400)
-#     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+@csrf_exempt
+def chatbot_query(request):
+    if request.method == "POST":
+        try:
+            # Parse JSON body
+            data = json.loads(request.body)
+            user_query = data.get("user_input")  # Extract 'user_input' from JSON
+            if user_query:
+                # Get chat history from session
+                chat_history = request.session.get("chat_history", [])
+                # Process the query
+                response = get_response(user_query, chat_history)
+                # Update chat history
+                chat_history.append({"user": user_query, "assistant": response})
+                # Save updated chat history in session
+                request.session["chat_history"] = chat_history
+                return JsonResponse({"response": response})
+
+            return JsonResponse({"error": "No input provided"}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON format"}, status=400)
+
+    return JsonResponse({"error": "Invalid request method."}, status=400)
+
 
 # def login_view(request):
 #     if request.method == "POST":
@@ -61,32 +74,3 @@ import json
 #             return JsonResponse({"response": response})  # Return JSON response
 #         return JsonResponse({'error': 'No query provided'}, status=400)
 #     return JsonResponse({'error': 'Invalid request method.'}, status=400)
-
-user_history = {}
-
-
-@csrf_exempt
-def chat(request):
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            user_query = data.get("query", "")
-            user_id = data.get("user_id", "default")  # Identify the user
-
-            # Initialize history for the user if not present
-            if user_id not in user_history:
-                user_history[user_id] = []
-
-            # Get response from the chatbot
-            assistant_response = get_response(user_query, user_history[user_id])
-
-            # Update the user's conversation history
-            user_history[user_id].append(
-                {"user": user_query, "assistant": assistant_response}
-            )
-
-            return JsonResponse({"response": assistant_response}, status=200)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-    else:
-        return JsonResponse({"error": "Only POST requests are allowed"}, status=405)

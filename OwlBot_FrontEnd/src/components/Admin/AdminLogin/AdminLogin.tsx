@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { adminLogin } from "../../../redux/adminSlice";
 import { Container, Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
     const dispatch = useDispatch();
@@ -30,7 +30,12 @@ const AdminLogin = () => {
     return (
         <div style={styles.pageContainer}>
             <Container style={styles.formContainer}>
-                <h2>OwlBot Admin Login</h2>
+                <h2>
+                    <Link to="/OwlBot" style={{ color: "black" }}>
+                        OwlBot
+                    </Link>{" "}
+                    Admin
+                </h2>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formUsername">
                         <Form.Label>Username</Form.Label>
