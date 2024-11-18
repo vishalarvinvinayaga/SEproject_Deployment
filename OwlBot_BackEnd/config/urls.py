@@ -14,15 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin # type: ignore
-from django.urls import path, include # type: ignore
-from django.shortcuts import redirect # type: ignore
-from chatbot import views as chatbot_views 
+
+from django.contrib import admin  # type: ignore
+from django.urls import path, include  # type: ignore
+from django.shortcuts import redirect  # type: ignore
+from chatbot import views as chatbot_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('chatbot/', include('chatbot.urls',namespace='chatbot')),
-    path('', lambda request: redirect('chatbot/')),
-    path('login/', chatbot_views.login_view, name='login'),
-    path('logout/', chatbot_views.logout_view, name='logout'),
+    path("admin/", admin.site.urls),
+    path("api/", include("chatbot.urls", namespace="chatbot")),
+    path("", lambda request: redirect("api/")),
+    # path('login/', chatbot_views.login_view, name='login'),
+    # path('logout/', chatbot_views.logout_view, name='logout'),
 ]
