@@ -11,9 +11,7 @@ import { useNavigate } from "react-router-dom";
 const AdminDashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { token, isLoggedIn } = useSelector(
-        (state: RootState) => state.admin
-    );
+    const { isLoggedIn } = useSelector((state: RootState) => state.admin);
 
     // Redirect to login if not logged in
     useEffect(() => {

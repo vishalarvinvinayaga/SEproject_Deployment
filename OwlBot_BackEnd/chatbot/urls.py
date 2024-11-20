@@ -4,10 +4,10 @@ from . import views
 app_name = "chatbot"
 
 urlpatterns = [
-    # path('', views.chatbot_home, name='chatbot_home'),  # Homepage
-    # path('index/', views.index, name='index'),  # Main chatbot page
-    path(
-        "query/", views.chatbot_query, name="chatbot_query"
-    ),  # Endpoint for chatbot query
-    # path('api/handle_query/', views.query_view, name='handle_query'),  # Endpoint for handling user queries
+    # Chatbot Query API
+    path("query/", views.chatbot_query, name="chatbot_query"),
+    # Admin Login API
+    path("admin/login/", views.admin_login, name="admin_login"),
+    # Admin Logout API
+    path("admin/logout/", views.admin_logout, name="admin_logout"),
 ]

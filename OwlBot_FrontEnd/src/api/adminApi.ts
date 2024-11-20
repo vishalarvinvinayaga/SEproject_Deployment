@@ -1,7 +1,7 @@
 // src/api/adminApi.ts
 import axios from "axios";
 
-const API_URL = ""; // Replace with your API endpoint
+const API_URL = "http://localhost:8000/api/admin"; // Replace with your API endpoint
 
 const getAuthHeaders = (token: string | null) => ({
     headers: {
@@ -13,26 +13,11 @@ export const loginAdmin = async (credentials: {
     username: string;
     password: string;
 }) => {
-    // const response = await axios.post(`${API_URL}/login`, credentials);
-    // return response.data; // Assuming the response includes the token
-
-    // Dummy credentials for testing
-    const validUsername = "admin";
-    const validPassword = "password";
-
-    if (
-        credentials.username === validUsername &&
-        credentials.password === validPassword
-    ) {
-        // Return a dummy token on success
-        return { token: "dummy-jwt-token" };
-    } else {
-        // Simulate a failed login attempt
-        throw { response: { data: "Invalid credentials" } };
-    }
+    const response = await axios.post(`${API_URL}/login/`, credentials);
+    return response.data; // Assuming the response includes the token
 };
 
-export const logoutAdmin = async () => {
-    await axios.post(`${API_URL}/logout`);
+export const logoutAdmin = async (token: string | null) => {
+    const headers = getAuthHeaders(token);
+    await axios.post(`${API_URL}/logout/`, {}, headers);
 };
-

@@ -7,12 +7,14 @@ const token = localStorage.getItem("token");
 interface AdminState {
     isLoggedIn: boolean;
     token: string | null;
+    username: string | null;
     error: string | null;
 }
 
 const initialState: AdminState = {
     isLoggedIn: token ? true : false,
-    token: null,
+    token: token || null,
+    username: null,
     error: null,
 };
 
@@ -26,8 +28,7 @@ export const adminLogin = createAsyncThunk(
         try {
             const data = await loginAdmin(credentials);
             localStorage.setItem("token", data.token);
-            console.log(data.token);
-            return data.token; // Assuming the token is returned in response
+            return { token: data.token, username: data.username }; // Assuming the token is returned in response
         } catch (error) {
             return rejectWithValue(error.response?.data || "Login failed");
         }
@@ -35,12 +36,19 @@ export const adminLogin = createAsyncThunk(
 );
 
 // Async thunk for admin logout
-export const adminLogout = createAsyncThunk("admin/logout", async () => {
-    console.log("Attempting to log out...");
-    localStorage.removeItem("token");
-    // await logoutAdmin();
-    console.log("Logout successful.");
-});
+export const adminLogout = createAsyncThunk(
+    "admin/logout",
+    async (_, { getState }) => {
+        const state = getState() as { admin: AdminState };
+        const token = state.admin.token;
+
+        if (token) {
+            await logoutAdmin(token);
+        }
+
+        localStorage.removeItem("token");
+    }
+);
 
 const adminSlice = createSlice({
     name: "admin",
@@ -50,17 +58,22 @@ const adminSlice = createSlice({
         builder
             .addCase(adminLogin.fulfilled, (state, action) => {
                 state.isLoggedIn = true;
-                state.token = action.payload; // Save the JWT token
+                state.token = action.payload.token; // Save the JWT token
+                state.username = action.payload.username;
                 state.error = null;
             })
             .addCase(adminLogin.rejected, (state, action) => {
                 state.isLoggedIn = false;
                 state.error = action.payload as string;
+                state.token = null;
+                state.username = null;
             })
             .addCase(adminLogout.fulfilled, (state) => {
                 state.isLoggedIn = false;
                 state.token = null; // Clear the token on logout
                 localStorage.removeItem("token");
+                state.username = null;
+                state.error = null;
             });
     },
 });

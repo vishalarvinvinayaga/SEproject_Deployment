@@ -3,17 +3,11 @@ from django.http import JsonResponse  # type: ignore
 from django.contrib.auth import authenticate, login, logout  # type: ignore
 from django.contrib.auth.decorators import login_required  # type: ignore
 from django.contrib import messages  # type: ignore
+from django.contrib.auth.models import User
 from .query_handler import get_response
-
 from django.views.decorators.csrf import csrf_exempt  # type: ignore
 import json
-
-# # Example in chatbot/views.py
-# return redirect('chatbot:index')  # Use the namespace 'chatbot' when redirecting to the index
-
-
-# def chatbot_home(request):
-#     return render(request, 'chatbot/home.html')
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 @csrf_exempt
@@ -22,14 +16,20 @@ def chatbot_query(request):
         try:
             # Parse JSON body
             data = json.loads(request.body)
-            user_query = data.get("user_input")  # Extract 'user_input' from JSON
+
+            # Extract 'user_input' from JSON
+            user_query = data.get("user_input")
+
             if user_query:
                 # Get chat history from session
                 chat_history = request.session.get("chat_history", [])
+
                 # Process the query
                 response = get_response(user_query, chat_history)
+
                 # Update chat history
                 chat_history.append({"user": user_query, "assistant": response})
+
                 # Save updated chat history in session
                 request.session["chat_history"] = chat_history
                 return JsonResponse({"response": response})
@@ -41,36 +41,42 @@ def chatbot_query(request):
     return JsonResponse({"error": "Invalid request method."}, status=400)
 
 
-# def login_view(request):
-#     if request.method == "POST":
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             return redirect('chatbot:index')
-#         else:
-#             messages.error(request, "Invalid username or password")
-#     return render(request, 'chatbot/login.html')
+@csrf_exempt
+def admin_login(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            username = data.get("username")
+            password = data.get("password")
+            if not username or not password:
+                return JsonResponse(
+                    {"error": "Username and password are required."}, status=400
+                )
 
-# def logout_view(request):
-#     logout(request)
-#     return redirect('login')
+            # Authenticate admin user
+            user = authenticate(request, username=username, password=password)
+            if user and user.is_staff:  # Check if the user is an admin
+                refresh = RefreshToken.for_user(user)
+                return JsonResponse(
+                    {
+                        "token": str(refresh.access_token),
+                        "refresh": str(refresh),
+                        "username": user.username,
+                    }
+                )
+            else:
+                return JsonResponse(
+                    {"error": "Invalid credentials or not an admin."}, status=401
+                )
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON format."}, status=400)
 
-# @login_required
-# def index(request):
-#     return render(request, 'chatbot/index.html')  # Render your chatbot's main template
+    return JsonResponse({"error": "Invalid request method."}, status=400)
 
-# # Create your views here.
-# @login_required
-# def query_view(request):
-#     if request.method == "POST":
-#         user_query = request.POST.get("query")  # Get the query from POST data
-#         if user_query:
-#             chat_history = request.session.get("chat_history", [])  # Retrieve chat history from session
-#             response = get_response(user_query, chat_history)  # Get response from the handler
-#             chat_history.append({"user": user_query, "assistant": response})  # Update chat history
-#             request.session["chat_history"] = chat_history  # Save updated history in session
-#             return JsonResponse({"response": response})  # Return JSON response
-#         return JsonResponse({'error': 'No query provided'}, status=400)
-#     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+@csrf_exempt
+def admin_logout(request):
+    if request.method == "POST":
+        return JsonResponse({"message": "Logged out successfully."}, status=200)
+
+    return JsonResponse({"error": "Invalid request method."}, status=400)

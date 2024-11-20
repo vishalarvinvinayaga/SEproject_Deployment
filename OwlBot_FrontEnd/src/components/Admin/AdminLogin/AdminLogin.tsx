@@ -18,7 +18,6 @@ const AdminLogin = () => {
         try {
             // Attempt to log in and unwrap the result to handle the response
             await dispatch(adminLogin({ username, password })).unwrap();
-            console.log("Successfully logged in");
             navigate("/admin/dashboard");
             // Handle successful login (e.g., redirecting to a dashboard)
         } catch (err) {
