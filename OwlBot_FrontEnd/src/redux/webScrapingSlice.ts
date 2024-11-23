@@ -29,7 +29,7 @@ export const submitWebScrapingSchedule = createAsyncThunk(
                 data.token
             );
             return response;
-        } catch (error) {
+        } catch (error:any) {
             return rejectWithValue(error.response?.data || "Scheduling failed");
         }
     }

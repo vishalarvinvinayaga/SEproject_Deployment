@@ -29,7 +29,7 @@ export const adminLogin = createAsyncThunk(
             const data = await loginAdmin(credentials);
             localStorage.setItem("token", data.token);
             return { token: data.token, username: data.username }; // Assuming the token is returned in response
-        } catch (error) {
+        } catch (error:any) {
             return rejectWithValue(error.response?.data || "Login failed");
         }
     }

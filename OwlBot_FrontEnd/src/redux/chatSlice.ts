@@ -27,7 +27,7 @@ export const sendMessageToBackend = createAsyncThunk(
         try {
             const data = await sendChatMessage(message);
             return data.response;
-        } catch (error) {
+        } catch (error:any) {
             return rejectWithValue(
                 error.response?.data.error || "Failed to send message"
             );

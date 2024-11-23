@@ -3,11 +3,14 @@ from django.http import JsonResponse  # type: ignore
 from django.contrib.auth import authenticate, login, logout  # type: ignore
 from django.contrib.auth.decorators import login_required  # type: ignore
 from django.contrib import messages  # type: ignore
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User # type: ignore
 from .query_handler import get_response
 from django.views.decorators.csrf import csrf_exempt  # type: ignore
 import json
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
+from .scheduler import add_one_time_task, add_recurring_task, remove_task
+from django.views import View #type:ignore
+from django.utils.decorators import method_decorator #type:ignore
 
 
 @csrf_exempt
@@ -74,6 +77,43 @@ def admin_login(request):
     return JsonResponse({"error": "Invalid request method."}, status=400)
 
 
+@method_decorator(csrf_exempt, name="dispatch")
+class ScheduleTaskView(View):
+    """
+    Handles scheduling tasks (one-time and recurring).
+    """
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            task_type = data.get("task_type")  # 'one_time' or 'recurring'
+            run_date = data.get("run_date")  # Required for one-time tasks
+            cron_expression = data.get("cron_expression")  # Required for recurring tasks
+
+            if task_type == "one_time" and run_date:
+                add_one_time_task(run_date)
+                return JsonResponse({"message": "One-time task scheduled!"}, status=201)
+            elif task_type == "recurring" and cron_expression:
+                cron_dict = eval(cron_expression)  # Convert string to dictionary
+                add_recurring_task(cron_dict)
+                return JsonResponse({"message": "Recurring task scheduled!"}, status=201)
+            else:
+                return JsonResponse({"error": "Invalid task_type or missing parameters."}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    def delete(self, request):
+        try:
+            data = json.loads(request.body)
+            job_id = data.get("job_id")
+            if not job_id:
+                return JsonResponse({"error": "Job ID is required."}, status=400)
+            remove_task(job_id)
+            return JsonResponse({"message": "Task removed successfully!"}, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+        
+
+        
 @csrf_exempt
 def admin_logout(request):
     if request.method == "POST":

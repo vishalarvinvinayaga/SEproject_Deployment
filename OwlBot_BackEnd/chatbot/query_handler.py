@@ -5,9 +5,7 @@ from .startup_tasks import logger  # Import vector stores from startup_tasks
 from langchain_openai import OpenAI  # type:ignore
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate  # type:ignore
 from langchain.schema import HumanMessage, SystemMessage  # type:ignore
-from langchain.chains.combine_documents import (
-    create_stuff_documents_chain,
-)  # type:ignore
+from langchain.chains.combine_documents import (create_stuff_documents_chain,)  # type:ignore
 from langchain.chains import create_retrieval_chain  # type:ignore
 from langchain.chains import create_history_aware_retriever  # type:ignore
 from chatbot.db_store import faculty_db, eecs_db
