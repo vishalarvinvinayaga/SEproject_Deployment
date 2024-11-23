@@ -1,36 +1,70 @@
-// src/redux/webScrapingSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { scheduleWebScraping } from "../api/webScrapingApi";
+import {
+    scheduleWebScraping,
+    removeWebScrapingTask,
+} from "../api/webScrapingApi";
 
 interface WebScrapingState {
-    frequency: number; // Ensure frequency is explicitly typed as a number
+    taskType: string;
+    runDate: string | null;
+    cronExpression: object | null;
     loading: boolean;
     success: boolean | null;
     error: string | null;
 }
 
 const initialState: WebScrapingState = {
-    frequency: 0,
+    taskType: "one_time", // Default task type
+    runDate: null,
+    cronExpression: null,
     loading: false,
     success: null,
     error: null,
 };
 
-// Async thunk to schedule web scraping
+// Async thunk to schedule a task
 export const submitWebScrapingSchedule = createAsyncThunk(
     "webScraping/schedule",
     async (
-        data: { frequency: number; token: string | null },
+        data: {
+            taskType: string;
+            runDate: string | null;
+            cronExpression: object | null;
+            token: string | null;
+        },
         { rejectWithValue }
     ) => {
         try {
             const response = await scheduleWebScraping(
-                data.frequency,
+                data.taskType,
+                data.runDate,
+                data.cronExpression,
                 data.token
             );
             return response;
-        } catch (error:any) {
+        } catch (error: any) {
             return rejectWithValue(error.response?.data || "Scheduling failed");
+        }
+    }
+);
+
+// Async thunk to remove a task
+export const deleteWebScrapingTask = createAsyncThunk(
+    "webScraping/remove",
+    async (
+        data: { jobId: string; token: string | null },
+        { rejectWithValue }
+    ) => {
+        try {
+            const response = await removeWebScrapingTask(
+                data.jobId,
+                data.token
+            );
+            return response;
+        } catch (error: any) {
+            return rejectWithValue(
+                error.response?.data || "Task removal failed"
+            );
         }
     }
 );
@@ -39,8 +73,11 @@ const webScrapingSlice = createSlice({
     name: "webScraping",
     initialState,
     reducers: {
-        setFrequency: (state, action) => {
-            state.frequency = action.payload;
+        setTaskDetails: (state, action) => {
+            const { taskType, runDate, cronExpression } = action.payload;
+            state.taskType = taskType;
+            state.runDate = runDate;
+            state.cronExpression = cronExpression;
         },
     },
     extraReducers: (builder) => {
@@ -58,10 +95,22 @@ const webScrapingSlice = createSlice({
                 state.loading = false;
                 state.success = false;
                 state.error = action.payload as string;
+            })
+            .addCase(deleteWebScrapingTask.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(deleteWebScrapingTask.fulfilled, (state) => {
+                state.loading = false;
+                state.success = true;
+            })
+            .addCase(deleteWebScrapingTask.rejected, (state, action) => {
+                state.loading = false;
+                state.success = false;
+                state.error = action.payload as string;
             });
     },
 });
 
-export const { setFrequency } = webScrapingSlice.actions;
+export const { setTaskDetails } = webScrapingSlice.actions;
 
 export default webScrapingSlice.reducer;

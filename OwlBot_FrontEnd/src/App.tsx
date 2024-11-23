@@ -17,6 +17,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Navigate to="/OwlBot" />} />
                     <Route path="/OwlBot" element={<ChatBot />} />
+                    <Route path="/admin" element={<Navigate to="/admin/login" />} />
                     <Route path="/admin/login" element={<AdminLogin />} />
                     <Route
                         path="/admin/dashboard"
