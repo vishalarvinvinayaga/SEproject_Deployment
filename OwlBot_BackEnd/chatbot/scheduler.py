@@ -83,10 +83,3 @@ def start_scheduler():
         logger.info("Scheduler started")
     except Exception as e:
         logger.error(f"Error starting scheduler: {e}")
-
-def list_jobs():
-    jobs = scheduler.get_jobs()
-    for job in jobs:
-        print(f"Job ID: {job.id}, Next Run: {job.next_run_time}, Trigger: {job.trigger}")
-
-list_jobs()

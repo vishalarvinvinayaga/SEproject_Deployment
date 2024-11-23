@@ -112,6 +112,19 @@ class ScheduleTaskView(View):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
         
+    def get(self, request):
+        """List all scheduled tasks."""
+        try:
+            from .scheduler import scheduler
+            jobs = scheduler.get_jobs()
+            tasks = [
+                {"job_id": job.id, "next_run_time": job.next_run_time.isoformat() if job.next_run_time else None}
+                for job in jobs
+            ]
+            return JsonResponse({"tasks": tasks}, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+        
 
         
 @csrf_exempt

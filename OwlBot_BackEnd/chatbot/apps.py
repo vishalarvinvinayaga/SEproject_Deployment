@@ -13,3 +13,6 @@ class ChatbotConfig(AppConfig):
         #     return True
         from . import startup_tasks
         startup_tasks.main()
+        
+        from .scheduler import start_scheduler
+        start_scheduler()

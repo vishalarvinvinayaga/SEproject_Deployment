@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     scheduleWebScraping,
     removeWebScrapingTask,
+    fetchScheduledTasks,
 } from "../api/webScrapingApi";
 
 interface WebScrapingState {
@@ -11,6 +12,7 @@ interface WebScrapingState {
     loading: boolean;
     success: boolean | null;
     error: string | null;
+    tasks: { job_id: string; next_run_time: string | null }[];
 }
 
 const initialState: WebScrapingState = {
@@ -20,6 +22,7 @@ const initialState: WebScrapingState = {
     loading: false,
     success: null,
     error: null,
+    tasks: [],
 };
 
 // Async thunk to schedule a task
@@ -69,6 +72,20 @@ export const deleteWebScrapingTask = createAsyncThunk(
     }
 );
 
+// Async thunk to fetch tasks
+export const fetchTasks = createAsyncThunk(
+    "webScraping/fetchTasks",
+    async (token: string | null, { rejectWithValue }) => {
+        try {
+            return await fetchScheduledTasks(token);
+        } catch (error: any) {
+            return rejectWithValue(
+                error.response?.data || "Failed to fetch tasks"
+            );
+        }
+    }
+);
+
 const webScrapingSlice = createSlice({
     name: "webScraping",
     initialState,
@@ -106,6 +123,18 @@ const webScrapingSlice = createSlice({
             .addCase(deleteWebScrapingTask.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
+                state.error = action.payload as string;
+            })
+            .addCase(fetchTasks.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchTasks.fulfilled, (state, action) => {
+                state.loading = false;
+                state.tasks = action.payload;
+            })
+            .addCase(fetchTasks.rejected, (state, action) => {
+                state.loading = false;
                 state.error = action.payload as string;
             });
     },

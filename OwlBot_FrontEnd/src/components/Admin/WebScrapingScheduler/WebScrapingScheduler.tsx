@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Container } from "react-bootstrap";
 import { RootState, AppDispatch } from "../../../redux/store";
 import {
     submitWebScrapingSchedule,
     deleteWebScrapingTask,
+    fetchTasks,
 } from "../../../redux/webScrapingSlice";
 
 const WebScrapingScheduler = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { taskType, runDate, loading, success, error } = useSelector(
+    const { taskType, runDate, tasks, loading, success, error } = useSelector(
         (state: RootState) => state.webScraping
     );
     const { token } = useSelector((state: RootState) => state.admin);
@@ -17,7 +18,14 @@ const WebScrapingScheduler = () => {
     const [inputTaskType, setInputTaskType] = useState(taskType);
     const [inputRunDate, setInputRunDate] = useState(runDate);
     const [inputHours, setInputHours] = useState(""); // Store the user input for hours
-    const [jobIdToDelete, setJobIdToDelete] = useState("");
+    const [selectedTask, setSelectedTask] = useState("");
+
+    // Fetch tasks when the component loads
+    useEffect(() => {
+        if (token) {
+            dispatch(fetchTasks(token));
+        }
+    }, [dispatch, token]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -67,8 +75,8 @@ const WebScrapingScheduler = () => {
     };
 
     const handleRemoveTask = async () => {
-        if (!jobIdToDelete) {
-            alert("Please enter a Job ID to delete.");
+        if (!selectedTask) {
+            alert("Please select a task to remove.");
             return;
         }
         if (!token) {
@@ -76,7 +84,7 @@ const WebScrapingScheduler = () => {
             return;
         }
 
-        await dispatch(deleteWebScrapingTask({ jobId: jobIdToDelete, token }));
+        await dispatch(deleteWebScrapingTask({ jobId: selectedTask, token }));
     };
 
     return (
@@ -129,14 +137,21 @@ const WebScrapingScheduler = () => {
                 </Button>
             </Form>
             <hr />
-            <Form.Group controlId="removeJobIdInput" className="w-50">
-                <Form.Label>Remove Task</Form.Label>
+            <Form.Group controlId="taskDropdown" className="w-50">
+                <Form.Label>Scheduled Tasks</Form.Label>
                 <Form.Control
-                    type="text"
-                    value={jobIdToDelete}
-                    onChange={(e) => setJobIdToDelete(e.target.value)}
-                    placeholder="Enter Job ID to delete"
-                />
+                    as="select"
+                    value={selectedTask}
+                    onChange={(e) => setSelectedTask(e.target.value)}
+                >
+                    <option value="">-- Select a Task --</option>
+                    {tasks.map((task) => (
+                        <option key={task.job_id} value={task.job_id}>
+                            {task.job_id} - Next Run:{" "}
+                            {task.next_run_time || "N/A"}
+                        </option>
+                    ))}
+                </Form.Control>
                 <Button
                     variant="danger"
                     onClick={handleRemoveTask}
@@ -147,7 +162,9 @@ const WebScrapingScheduler = () => {
                 </Button>
             </Form.Group>
             {success && (
-                <p className="text-success">Task scheduled successfully!</p>
+                <p className="text-success">
+                    Operation completed successfully!
+                </p>
             )}
             {error && <p className="text-danger">Error: {error}</p>}
         </Container>

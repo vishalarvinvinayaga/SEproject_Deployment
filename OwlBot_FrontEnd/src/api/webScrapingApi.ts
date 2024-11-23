@@ -24,6 +24,15 @@ export const scheduleWebScraping = async (
     );
     return response.data;
 };
+// Fetch all tasks
+export const fetchScheduledTasks = async (token: string | null) => {
+    const response = await axios.get(`${API_URL}/scraping-schedule/`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data.tasks;
+};
 
 // Remove Web Scraping Task API
 export const removeWebScrapingTask = async (
