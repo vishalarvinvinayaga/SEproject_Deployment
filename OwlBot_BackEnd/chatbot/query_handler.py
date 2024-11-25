@@ -61,6 +61,10 @@ def determine_context(user_question):
         "subject code",
         "teaches",
         "taught",
+        "reach",
+        "contact",
+        "phone",
+        "email"
     ]
 
     # Keywords for general EECS information queries
@@ -89,6 +93,7 @@ def determine_context(user_question):
 # Define a function to select the appropriate retriever based on question type
 def get_appropriate_retriever(user_question, history):
     question_type = determine_context(user_question)
+
     if question_type == "professor":
         return faculty_history_retriever
     elif question_type == "general":
@@ -168,7 +173,7 @@ def get_appropriate_retrieval_chain(user_question):
 def get_relevant_docs(user_query, history):
     retriever = get_appropriate_retriever(user_query, history)
     input_data = {"input": user_query, "history": history}
-    retrieved_docs = retriever.invoke(input_data)
+    retrieved_docs = faculty_history_retriever.invoke(input_data)
     return retrieved_docs
 
 
@@ -212,6 +217,8 @@ def manage_chat_history(chat_history, max_length=5):
 
 def get_response(user_query, chat_history):
     standalone_question = generate_standalone_question(chat_history, user_query)
+    logger.info(f"this is chat history: {chat_history}")
+    logger.info(f"Standalone Question:{standalone_question}")
 
     # Select the appropriate retrieval chain
     retrieval_chain = get_appropriate_retrieval_chain(standalone_question)
@@ -233,7 +240,7 @@ def get_response(user_query, chat_history):
     assistant_response = response.get("answer", "No answer found")
 
     # Update and manage chat history
-    chat_history = update_chat_history(chat_history, user_query, assistant_response)
-    chat_history = manage_chat_history(chat_history)
+    update_chat_history(chat_history, user_query, assistant_response)
+    manage_chat_history(chat_history)
 
     return assistant_response

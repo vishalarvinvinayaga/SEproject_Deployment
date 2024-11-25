@@ -12,6 +12,13 @@ from .scheduler import add_one_time_task, add_recurring_task, remove_task
 from django.views import View #type:ignore
 from django.utils.decorators import method_decorator #type:ignore
 
+import logging
+logging.basicConfig(
+    level=logging.INFO,  # Set the level to INFO or DEBUG as needed
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler()],  # This will log to the console
+)
+logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def chatbot_query(request):
@@ -25,16 +32,19 @@ def chatbot_query(request):
 
             if user_query:
                 # Get chat history from session
+                
                 chat_history = request.session.get("chat_history", [])
+                logger.info(f"views CHAT HISTORY: {chat_history}")
 
                 # Process the query
                 response = get_response(user_query, chat_history)
 
                 # Update chat history
                 chat_history.append({"user": user_query, "assistant": response})
-
+                #logger.info(f"views CHAT HISTORY after response: {chat_history}")
                 # Save updated chat history in session
                 request.session["chat_history"] = chat_history
+                logger.info("Session data:", dict(request.session))
                 return JsonResponse({"response": response})
 
             return JsonResponse({"error": "No input provided"}, status=400)

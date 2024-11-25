@@ -265,16 +265,13 @@ def setup_vector_database():
         logger.info(f"eecs_db startup: {db_store.eecs_db}")
         # Populate FacultyDetails collection
         for entry in init[0]:  # Assuming init[0] contains the faculty-related entries
-            faculty_db.add_texts([entry])
+            db_store.faculty_db.add_texts([entry])
 
         # Populate EECSInformation collection with general EECS details¸
-        for entry in init[
-            2
-        ]:  # Assuming advising_details contains the EECS general information entries
-            eecs_db.add_texts([entry])
+        for entry in init[2]:  # Assuming advising_details contains the EECS general information entries
+            db_store.eecs_db.add_texts([entry])
 
         logger.info("Completed setup_vector_database successfully")
-        client.close()
     except Exception as e:
         logger.error("Error in setup_vector_database: %s", str(e))
 
