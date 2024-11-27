@@ -58,3 +58,29 @@
     background-repeat: no-repeat;
     background-position: center;
 }
+
+
+/* Thin pill-like scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    /* Scrollbar width */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #cecece;
+    /* Scrollbar color */
+    border-radius: 10px;
+    /* Rounded edges for the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #bababa;
+    /* Darker blue on hover */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+    /* Track background color */
+    border-radius: 10px;
+    /* Rounded edges for the track */
+}

@@ -1,0 +1,30 @@
+[
+    {
+        "Name": "FAU",
+        "Link": "https://www.fau.edu"
+    },
+    {
+        "Name": "FAU EECS",
+        "Link": "https://www.fau.edu/engineering/eecs/"
+    },
+    {
+        "Name": "FAU EECS Location",
+        "Link": "https://maps.app.goo.gl/tq9LBgWep8fR6tBm9"
+    },
+    {
+        "Name": "FAU ISSS",
+        "Link": "https://www.fau.edu/global/international/"
+    },
+    {
+        "Name": "ChatGPT",
+        "Link": "https://chatgpt.com/"
+    },
+    {
+        "Name": "Gemini",
+        "Link": "https://gemini.google.com/app"
+    },
+    {
+        "Name": "Grammerly",
+        "Link": "https://app.grammarly.com/"
+    }
+]

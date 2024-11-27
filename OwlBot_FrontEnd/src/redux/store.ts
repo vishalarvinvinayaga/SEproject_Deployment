@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import chatReducer from "./chatSlice";
 import adminReducer from "./adminSlice";
-import webScrapingReducer from "./webScrapingSlice"
+import webScrapingReducer from "./webScrapingSlice";
+import fetchNewsReducer from "./fetchNewsSlice";
 
 export const store = configureStore({
     reducer: {
         chat: chatReducer,
         admin: adminReducer,
         webScraping: webScrapingReducer,
+        news: fetchNewsReducer,
     },
 });
 

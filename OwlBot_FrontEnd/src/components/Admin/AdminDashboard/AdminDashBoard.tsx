@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { Button, Card, Container, Nav, Tab } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { AppDispatch, RootState } from "../../../redux/store";
 import { adminLogout } from "../../../redux/adminSlice";
-import JSONDataInsertion from "../JSONDataInsertion/JSONDataInsertion";
+// import JSONDataInsertion from "../JSONDataInsertion/JSONDataInsertion";
 import WebScrapingScheduler from "../WebScrapingScheduler/WebScrapingScheduler";
 import AdminHome from "../AdminHome/AdminHome";
 import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const { isLoggedIn } = useSelector((state: RootState) => state.admin);
 

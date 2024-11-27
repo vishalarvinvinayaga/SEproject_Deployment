@@ -7,6 +7,7 @@ import {
     Form,
     InputGroup,
     Button,
+    ListGroup,
 } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
@@ -15,6 +16,9 @@ import ChatMessage from "../ChatMessage/ChatMessage";
 import NewsFeedMenu from "../NewsFeedMenu/NewsFeedMenu";
 import LinksMenu from "../LinksMenu/LinksMenu";
 import "./ChatBot.css";
+import UsefulLinks from "../../assets/usefulLinks.json";
+import { Link } from "react-router-dom";
+import { fetchNews } from "../../redux/fetchNewsSlice";
 
 const ChatBot = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -22,9 +26,17 @@ const ChatBot = () => {
     const [showNewsMenu, setShowNewsMenu] = useState(false);
     const [showLinksMenu, setShowLinksMenu] = useState(false);
 
-    const { messages, loading, error } = useSelector(
-        (state: RootState) => state.chat
-    );
+    const {
+        articles,
+        // loading: newsLoading,
+        // error: newsError,
+    } = useSelector((state: RootState) => state.news);
+
+    const {
+        messages,
+        loading: chatLoading,
+        error: chatError,
+    } = useSelector((state: RootState) => state.chat);
 
     const handleSendMessage = () => {
         if (input.trim() !== "") {
@@ -45,6 +57,10 @@ const ChatBot = () => {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [messages]);
+
+    useEffect(() => {
+        dispatch(fetchNews());
+    }, [dispatch]);
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
@@ -67,20 +83,53 @@ const ChatBot = () => {
                 <Row className="w-100 h-100 m-0">
                     {/* Left Column (News Feed for Large Screens) */}
                     <Col
-                        className="p-0 d-none d-lg-block"
+                        className="p-0 d-none d-lg-block custom-scrollbar"
                         lg={2}
                         style={{
                             backgroundColor: "#D9ECFF",
                             overflowY: "auto",
                             borderRight: "2px solid rgba(204, 204, 204)",
+                            height: "100vh",
                         }}
                     >
                         <h5 className="text-center mt-3">News Feed</h5>
                         <div className="news-feed px-3">
-                            <p>News Item 1</p>
-                            <p>News Item 2</p>
-                            <p>News Item 3</p>
-                            <p>News Item 4</p>
+                            <ul
+                                style={{
+                                    padding: "0",
+                                    margin: "0",
+                                    listStyleType: "none",
+                                }}
+                            >
+                                {articles.map((article, index) => (
+                                    <li
+                                        key={index}
+                                        style={{
+                                            marginBottom: "20px",
+                                            borderBottom: "1px solid #ccc",
+                                            paddingBottom: "10px",
+                                        }}
+                                    >
+                                        <a
+                                            href={article.url}
+                                            target="_blank"
+                                            style={{
+                                                color: "#007bff",
+                                                textDecoration: "none",
+                                                fontWeight: "bold",
+                                            }}
+                                        >
+                                            {article.title}
+                                        </a>
+                                        <p style={{ color: "#555" }}>
+                                            By {article.author}
+                                        </p>
+                                        <p style={{ fontSize: "12px" }}>
+                                            {article.description}
+                                        </p>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </Col>
 
@@ -115,7 +164,7 @@ const ChatBot = () => {
                                 </Button>
                             </Card.Header>
                             <Card.Body
-                                className="d-flex flex-column"
+                                className="d-flex flex-column custom-scrollbar"
                                 style={{
                                     height: "calc(100vh - 18vh)",
                                     overflowY: "auto",
@@ -130,16 +179,16 @@ const ChatBot = () => {
                                     />
                                 ))}
                                 <div ref={messagesEndRef} />
-                                {loading && (
+                                {chatLoading && (
                                     <div className="loading-dots left-aligned">
                                         <span className="dot"></span>
                                         <span className="dot"></span>
                                         <span className="dot"></span>
                                     </div>
                                 )}
-                                {error && (
+                                {chatError && (
                                     <p className="text-danger text-end">
-                                        {error}
+                                        {chatError}
                                     </p>
                                 )}
                             </Card.Body>
@@ -158,7 +207,7 @@ const ChatBot = () => {
                                             setInput(e.target.value)
                                         }
                                         onKeyDown={handleKeyPress}
-                                        disabled={loading}
+                                        disabled={chatLoading}
                                     />
                                     <Button
                                         onClick={handleSendMessage}
@@ -175,7 +224,7 @@ const ChatBot = () => {
 
                     {/* Right Column (Links for Large Screens) */}
                     <Col
-                        className="p-0 d-none d-lg-block"
+                        className="p-0 d-none d-lg-block custom-scrollbar"
                         lg={2}
                         style={{
                             backgroundColor: "#D9ECFF",
@@ -185,24 +234,26 @@ const ChatBot = () => {
                     >
                         <h5 className="text-center mt-3">Useful Links</h5>
                         <div className="links px-3">
-                            <p>
-                                <a
-                                    href="https://example.com"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Example Link 1
-                                </a>
-                            </p>
-                            <p>
-                                <a
-                                    href="https://example.com"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Example Link 2
-                                </a>
-                            </p>
+                            <ListGroup>
+                                {UsefulLinks.map((item, index) => (
+                                    <ListGroup.Item
+                                        key={index}
+                                        className="border rounded-3 m-1 p-3"
+                                    >
+                                        <Link
+                                            target="_blank"
+                                            to={item.Link}
+                                            style={{
+                                                color: "#007bff",
+                                                textDecoration: "none",
+                                                fontWeight: "bold",
+                                            }}
+                                        >
+                                            {item.Name}
+                                        </Link>
+                                    </ListGroup.Item>
+                                ))}
+                            </ListGroup>
                         </div>
                     </Col>
                 </Row>

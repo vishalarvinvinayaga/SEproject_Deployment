@@ -3,9 +3,10 @@ import { useDispatch } from "react-redux";
 import { adminLogin } from "../../../redux/adminSlice";
 import { Container, Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { AppDispatch } from "../../../redux/store";
 
 const AdminLogin = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

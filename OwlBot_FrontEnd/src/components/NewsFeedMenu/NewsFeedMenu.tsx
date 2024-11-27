@@ -1,4 +1,9 @@
 import { Offcanvas } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNews } from "../../redux/fetchNewsSlice";
+import { useEffect } from "react";
+import "./NewsFeedMenu.css";
+import { RootState, AppDispatch } from "../../redux/store";
 
 const NewsFeedMenu = ({
     show,
@@ -7,6 +12,18 @@ const NewsFeedMenu = ({
     show: boolean;
     handleClose: () => void;
 }) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { articles, loading, error } = useSelector(
+        (state: RootState) => state.news
+    );
+
+    useEffect(() => {
+        dispatch(fetchNews());
+    }, [dispatch]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+
     return (
         <Offcanvas
             show={show}
@@ -19,13 +36,46 @@ const NewsFeedMenu = ({
             </Offcanvas.Header>
             <Offcanvas.Body>
                 <div
-                    className="news-feed"
-                    style={{ maxHeight: "70vh", overflowY: "auto" }}
+                    className="news-feed custom-scrollbar"
+                    style={{ maxHeight: "85vh", overflowY: "auto" }}
                 >
-                    <p>News Item 1</p>
-                    <p>News Item 2</p>
-                    <p>News Item 3</p>
-                    <p>News Item 4</p>
+                    <ul
+                        style={{
+                            padding: "0",
+                            margin: "0",
+                            listStyleType: "none",
+                        }}
+                    >
+                        {articles.map((article, index) => (
+                            <li
+                                key={index}
+                                style={{
+                                    marginBottom: "20px",
+                                    borderBottom: "1px solid #ccc",
+                                    paddingBottom: "10px",
+                                }}
+                            >
+                                <a
+                                    href={article.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        color: "#007bff",
+                                        textDecoration: "none",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    {article.title}
+                                </a>
+                                <p style={{ color: "#555" }}>
+                                    By {article.author}
+                                </p>
+                                <p style={{ fontSize: "12px" }}>
+                                    {article.description}
+                                </p>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </Offcanvas.Body>
         </Offcanvas>
