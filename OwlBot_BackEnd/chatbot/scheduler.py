@@ -76,5 +76,11 @@ def remove_task(job_id):
         logger.error(f"Error removing task {job_id}: {e}")
 
 
-
+def start_scheduler():
+    """Start the scheduler."""
+    try:
+        scheduler.start()
+        logger.info("Scheduler started")
+    except Exception as e:
+        logger.error(f"Error starting scheduler: {e}")
 

@@ -14,5 +14,5 @@ class ChatbotConfig(AppConfig):
         from . import startup_tasks
         startup_tasks.main()
         
-        # from .scheduler import start_scheduler
-        # start_scheduler()
+        from .scheduler import start_scheduler
+        start_scheduler()
