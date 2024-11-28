@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const API_URL = "http://localhost:8000/api/admin"; // Replace with your API endpoint
+import { baseURL } from "../assets/baseURL";
 
 // Schedule Web Scraping API
 export const scheduleWebScraping = async (
@@ -10,7 +9,7 @@ export const scheduleWebScraping = async (
     token: string | null
 ) => {
     const response = await axios.post(
-        `${API_URL}/scraping-schedule/`,
+        `${baseURL}/admin/scraping-schedule/`,
         {
             task_type: taskType,
             run_date: runDate,
@@ -24,9 +23,10 @@ export const scheduleWebScraping = async (
     );
     return response.data;
 };
+
 // Fetch all tasks
 export const fetchScheduledTasks = async (token: string | null) => {
-    const response = await axios.get(`${API_URL}/scraping-schedule/`, {
+    const response = await axios.get(`${baseURL}/admin/scraping-schedule/`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -39,7 +39,7 @@ export const removeWebScrapingTask = async (
     jobId: string,
     token: string | null
 ) => {
-    const response = await axios.delete(`${API_URL}/scraping-schedule/`, {
+    const response = await axios.delete(`${baseURL}/admin/scraping-schedule/`, {
         data: { job_id: jobId },
         headers: {
             Authorization: `Bearer ${token}`,

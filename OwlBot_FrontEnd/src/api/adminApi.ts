@@ -1,7 +1,5 @@
-// src/api/adminApi.ts
 import axios from "axios";
-
-const API_URL = "http://localhost:8000/api/admin"; // Replace with your API endpoint
+import { baseURL } from "../assets/baseURL";
 
 const getAuthHeaders = (token: string | null) => ({
     headers: {
@@ -13,11 +11,11 @@ export const loginAdmin = async (credentials: {
     username: string;
     password: string;
 }) => {
-    const response = await axios.post(`${API_URL}/login/`, credentials);
+    const response = await axios.post(`${baseURL}/admin/login/`, credentials);
     return response.data; // Assuming the response includes the token
 };
 
 export const logoutAdmin = async (token: string | null) => {
     const headers = getAuthHeaders(token);
-    await axios.post(`${API_URL}/logout/`, {}, headers);
+    await axios.post(`${baseURL}/admin/logout/`, {}, headers);
 };

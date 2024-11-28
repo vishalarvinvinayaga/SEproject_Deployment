@@ -14,5 +14,5 @@ urlpatterns = [
     # Admin WebScraping Scheduler
     path("admin/scraping-schedule/", ScheduleTaskView.as_view(), name="schedule_task"),
     # to clear session history on reload
-    path("api/reset-session/", views.reset_session, name="reset_session"),
+    path("reset-session/", views.reset_session, name="reset_session"),
 ]

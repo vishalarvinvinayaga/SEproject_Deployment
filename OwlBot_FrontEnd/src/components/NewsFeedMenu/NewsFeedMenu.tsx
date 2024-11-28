@@ -21,8 +21,8 @@ const NewsFeedMenu = ({
         dispatch(fetchNews());
     }, [dispatch]);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+    // if (loading) return <p>Loading...</p>;
+    // if (error) return <p>Error: {error}</p>;
 
     return (
         <Offcanvas
@@ -34,6 +34,8 @@ const NewsFeedMenu = ({
             <Offcanvas.Header closeButton>
                 <Offcanvas.Title>News Feed</Offcanvas.Title>
             </Offcanvas.Header>
+            {loading && <Offcanvas.Body>Loading...</Offcanvas.Body>}
+            {error && <Offcanvas.Body>Error: {error}</Offcanvas.Body>}
             <Offcanvas.Body>
                 <div
                     className="news-feed custom-scrollbar"

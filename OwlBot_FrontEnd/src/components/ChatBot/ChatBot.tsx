@@ -19,7 +19,7 @@ import "./ChatBot.css";
 import UsefulLinks from "../../assets/usefulLinks.json";
 import { Link } from "react-router-dom";
 import { fetchNews } from "../../redux/fetchNewsSlice";
-import { resetSession } from "../../api/chatApi"; //to call ther resetsession on reload
+import { resetSession } from "../../api/chatApi"; //to call the resetsession on reload
 
 const ChatBot = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -29,8 +29,8 @@ const ChatBot = () => {
 
     const {
         articles,
-        // loading: newsLoading,
-        // error: newsError,
+        loading: newsLoading,
+        error: newsError,
     } = useSelector((state: RootState) => state.news);
 
     const {
@@ -106,6 +106,8 @@ const ChatBot = () => {
                     >
                         <h5 className="text-center mt-3">News Feed</h5>
                         <div className="news-feed px-3">
+                            {newsLoading && <p>Loading News...</p>}
+                            {newsError && <p>Error: {newsError}</p>}
                             <ul
                                 style={{
                                     padding: "0",
