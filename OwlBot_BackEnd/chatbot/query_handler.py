@@ -216,6 +216,7 @@ def manage_chat_history(chat_history, max_length=5):
 
 
 def get_response(user_query, chat_history):
+    logger.info(f"chat history in query_handler: {chat_history}")
     standalone_question = generate_standalone_question(chat_history, user_query)
     logger.info(f"this is chat history: {chat_history}")
     logger.info(f"Standalone Question:{standalone_question}")
@@ -237,10 +238,12 @@ def get_response(user_query, chat_history):
 
     # Get the response from the appropriate retrieval chain
     response = retrieval_chain.invoke(input_data)
+    logger.info(f"response: {response}")
     assistant_response = response.get("answer", "No answer found")
+    clean_response = assistant_response.replace("System:", "").replace("Assistant:", "").strip()
 
     # Update and manage chat history
-    update_chat_history(chat_history, user_query, assistant_response)
-    manage_chat_history(chat_history)
+    # update_chat_history(chat_history, user_query, assistant_response)
+    # manage_chat_history(chat_history)
 
-    return assistant_response
+    return clean_response

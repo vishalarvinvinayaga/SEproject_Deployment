@@ -19,6 +19,7 @@ import "./ChatBot.css";
 import UsefulLinks from "../../assets/usefulLinks.json";
 import { Link } from "react-router-dom";
 import { fetchNews } from "../../redux/fetchNewsSlice";
+import { resetSession } from "../../api/chatApi"; //to call ther resetsession on reload
 
 const ChatBot = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -57,6 +58,17 @@ const ChatBot = () => {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [messages]);
+
+    useEffect(() => {
+        // Reset the session on component mount
+        resetSession()
+            .then(() => {
+                console.log("Session reset successfully");
+            })
+            .catch((err) => {
+                console.error("Failed to reset session", err);
+            });
+    }, []); // Run once when component mounts
 
     useEffect(() => {
         dispatch(fetchNews());

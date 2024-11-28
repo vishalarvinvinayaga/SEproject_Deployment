@@ -13,4 +13,6 @@ urlpatterns = [
     path("admin/logout/", views.admin_logout, name="admin_logout"),
     # Admin WebScraping Scheduler
     path("admin/scraping-schedule/", ScheduleTaskView.as_view(), name="schedule_task"),
+    # to clear session history on reload
+    path("api/reset-session/", views.reset_session, name="reset_session"),
 ]

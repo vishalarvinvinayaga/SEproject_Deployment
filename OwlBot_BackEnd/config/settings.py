@@ -53,15 +53,16 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # Place at the top for proper CORS handling
     "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",  # Must come before CommonMiddleware
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Add your frontend URL here
@@ -153,3 +154,28 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
+
+#this when deployed
+SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Store sessions in the database
+
+SESSION_COOKIE_AGE = 3600  # 2 weeks in seconds
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Persist session even after browser is closed
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SAMESITE = "None"  # Required for cross-origin cookies
+SESSION_COOKIE_SECURE = True  # Use True if using HTTPS
+SESSION_SAVE_EVERY_REQUEST = True
+
+#dont use this
+# SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Store session data in the database
+# SESSION_COOKIE_AGE = 3600  # 1 hour in seconds
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session ends when the browser is closed
+# SESSION_SAVE_EVERY_REQUEST = True  # Save session on every request
+
+#this is for local setup
+# SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Store sessions in the database
+# SESSION_COOKIE_AGE = 3600  # 1 hour in seconds
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Expire session when the browser is closed
+# SESSION_SAVE_EVERY_REQUEST = True
+# SESSION_COOKIE_SAMESITE = "Lax"  # Use "Lax" for local testing
+# SESSION_COOKIE_SECURE = False  # Set to False for local development (True for production with HTTPS)
+# CORS_ALLOW_CREDENTIALS = True
