@@ -104,9 +104,14 @@ const webScrapingSlice = createSlice({
                 state.success = null;
                 state.error = null;
             })
-            .addCase(submitWebScrapingSchedule.fulfilled, (state) => {
+            .addCase(submitWebScrapingSchedule.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
+                const newTask = {
+                    job_id: action.payload.job_id || "Unknown Task",
+                    next_run_time: action.payload.next_run_time || null,
+                };
+                state.tasks = [...state.tasks, newTask];
             })
             .addCase(submitWebScrapingSchedule.rejected, (state, action) => {
                 state.loading = false;
@@ -116,9 +121,12 @@ const webScrapingSlice = createSlice({
             .addCase(deleteWebScrapingTask.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(deleteWebScrapingTask.fulfilled, (state) => {
+            .addCase(deleteWebScrapingTask.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
+                state.tasks = state.tasks.filter(
+                    (task) => task.job_id !== action.meta.arg.jobId
+                );
             })
             .addCase(deleteWebScrapingTask.rejected, (state, action) => {
                 state.loading = false;

@@ -59,16 +59,10 @@ const ChatBot = () => {
         }
     }, [messages]);
 
+    // Reset the session on component mount
     useEffect(() => {
-        // Reset the session on component mount
-        resetSession()
-            .then(() => {
-                console.log("Session reset successfully");
-            })
-            .catch((err) => {
-                console.error("Failed to reset session", err);
-            });
-    }, []); // Run once when component mounts
+        resetSession();
+    }, []);
 
     useEffect(() => {
         dispatch(fetchNews());
