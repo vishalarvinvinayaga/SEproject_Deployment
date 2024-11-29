@@ -21,7 +21,7 @@ const AdminHome = () => {
 
     return (
         <Container className="mt-4">
-            <h3>Admin Home</h3>
+            <h3 className="text-center">Admin Home</h3>
             <Card className="p-3 mt-3">
                 <Card.Body>
                     <Card.Title>Scheduled Web Scraping Tasks</Card.Title>
@@ -43,7 +43,7 @@ const AdminHome = () => {
                                 ))}
                         </ListGroup>
                     ) : (
-                        <p>No scheduled tasks found.</p>
+                        <p className="text-center">No scheduled tasks found.</p>
                     )}
                 </Card.Body>
             </Card>

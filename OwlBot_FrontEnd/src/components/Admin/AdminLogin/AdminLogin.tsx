@@ -73,13 +73,13 @@ const styles = {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        backgroundColor: "#f8f9fa", // Optional: background color
+        backgroundColor: "#CCCCCC", // Optional: background color
     },
     formContainer: {
         width: "100%",
         maxWidth: "400px", // Adjust width as needed
         padding: "2rem",
-        backgroundColor: "#fff",
+        backgroundColor: "#D9ECFF",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     },

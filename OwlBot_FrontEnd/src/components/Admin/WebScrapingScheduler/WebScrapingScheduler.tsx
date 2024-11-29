@@ -12,9 +12,14 @@ import { getTaskDescription } from "../../../common/TaskDescription/taskDescript
 
 const WebScrapingScheduler = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { taskType, runDate, tasks, loading, success, error } = useSelector(
-        (state: RootState) => state.webScraping
-    );
+    const {
+        taskType,
+        runDate,
+        tasks,
+        loading,
+        // success,
+        error,
+    } = useSelector((state: RootState) => state.webScraping);
     const { token } = useSelector((state: RootState) => state.admin);
 
     const [inputTaskType, setInputTaskType] = useState(taskType);
@@ -119,9 +124,10 @@ const WebScrapingScheduler = () => {
     }, [successMessage]);
 
     return (
-        <Container className="p-2 pt-5">
+        <Container className="mt-4">
+            <h3 className="text-center">Scheduling</h3>
             <Row>
-                <Col>
+                <Col xs={12} md={6}>
                     <Form onSubmit={handleSubmit} className="w-100">
                         <Form.Group controlId="taskTypeSelect">
                             <Form.Label>Task Type</Form.Label>
@@ -170,13 +176,13 @@ const WebScrapingScheduler = () => {
                             variant="primary"
                             type="submit"
                             disabled={loading}
-                            className="mt-3"
+                            className="mt-3 w-100"
                         >
                             {loading ? "Scheduling..." : "Schedule Scraping"}
                         </Button>
                     </Form>
                 </Col>
-                <Col>
+                <Col xs={12} md={6} className="mt-4 mt-md-0">
                     <Form.Group controlId="taskDropdown" className="w-100">
                         <Form.Label>Scheduled Tasks</Form.Label>
                         <Form.Control
@@ -196,14 +202,16 @@ const WebScrapingScheduler = () => {
                             variant="danger"
                             onClick={handleRemoveTask}
                             disabled={loading || !selectedTask}
-                            className="mt-3"
+                            className="mt-3 w-100"
                         >
                             {loading ? "Removing..." : "Remove Task"}
                         </Button>
                     </Form.Group>
                 </Col>
             </Row>
+
             <hr />
+            {/* Success and Error Messages */}
             {successMessage && <p className="text-success">{successMessage}</p>}
             {error && <p className="text-danger">Error: {error}</p>}
         </Container>
