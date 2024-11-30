@@ -15,6 +15,10 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv  # type: ignore
 
+# import pymysql # type: ignore
+# pymysql.install_as_MySQLdb()
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
@@ -34,6 +38,9 @@ SECRET_KEY = "django-insecure-3nf7wg*5m%t%1@=r=!b19=pq*71g&al5xkj$_gh0u*#3xt6fh8
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+# DEBUG = False
+# ALLOWED_HOSTS = ["your-ec2-public-ip", "your-domain.com"]  # Replace with actual values
 
 
 # Application definition
@@ -55,6 +62,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",  # Place at the top for proper CORS handling
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",  # Must come before CommonMiddleware
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -99,6 +107,21 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",  # MySQL backend
+#         "NAME": "owlbot_backend",             # Database name
+#         "USER": "your_mysql_user",            # Replace with your MySQL username
+#         "PASSWORD": "your_mysql_password",    # Replace with your MySQL password
+#         "HOST": "127.0.0.1",                  # Use 'localhost' or '127.0.0.1' for local database
+#         "PORT": "3306",                       # MySQL port (default: 3306)
+#         "OPTIONS": {
+#             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+# }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -134,10 +157,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+# STATIC_URL = "static/"
+# STATICFILES_DIRS = [BASE_DIR / "static"]
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = BASE_DIR / "media"
+
+STATICFILES_DIRS = []  # Remove or leave it empty
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"  # Where `collectstatic` will gather files
+
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = BASE_DIR / "media"  # Where uploaded files will be stored
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
