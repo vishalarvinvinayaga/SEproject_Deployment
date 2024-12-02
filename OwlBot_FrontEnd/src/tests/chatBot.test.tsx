@@ -5,7 +5,7 @@ import { store } from "../redux/store"; // Adjust path to your store
 import ChatBot from "../components/ChatBot/ChatBot";
 import {
     sendMessageToBackend,
-    fetchMessagesFromBackend,
+    //fetchMessagesFromBackend,
 } from "../redux/chatSlice";
 // import { mockStore } from "redux-mock-store"; // You can use this to mock redux store if needed
 
