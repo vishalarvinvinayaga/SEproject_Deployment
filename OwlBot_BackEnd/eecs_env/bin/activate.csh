@@ -9,17 +9,17 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/Users/vishalarvin/Documents/FALL 24/chatbotSE/eecs_chatbot/eecs_env"
+setenv VIRTUAL_ENV /home/ubuntu/SEproject_Deployment/OwlBot_BackEnd/eecs_env
 
 set _OLD_VIRTUAL_PATH="$PATH"
-setenv PATH "$VIRTUAL_ENV/bin:$PATH"
+setenv PATH "$VIRTUAL_ENV/"bin":$PATH"
 
 
 set _OLD_VIRTUAL_PROMPT="$prompt"
 
 if (! "$?VIRTUAL_ENV_DISABLE_PROMPT") then
-    set prompt = "(eecs_env) $prompt"
-    setenv VIRTUAL_ENV_PROMPT "(eecs_env) "
+    set prompt = '(eecs_env) '"$prompt"
+    setenv VIRTUAL_ENV_PROMPT '(eecs_env) '
 endif
 
 alias pydoc python -m pydoc

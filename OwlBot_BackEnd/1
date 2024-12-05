@@ -40,7 +40,7 @@ SECRET_KEY = "django-insecure-3nf7wg*5m%t%1@=r=!b19=pq*71g&al5xkj$_gh0u*#3xt6fh8
 #ALLOWED_HOSTS = []
 
 # DEBUG = False
-ALLOWED_HOSTS = ["18.226.4.178", "main.dc3573mzvqc1c.amplifyapp.com","owlbot.chat","127.0.0.1",'localhost']  # Replace with actual values
+ALLOWED_HOSTS = ["18.226.4.178", "main.dc3573mzvqc1c.amplifyapp.com","owlbot.chat"]  # Replace with actual values
 
 
 # Application definition
