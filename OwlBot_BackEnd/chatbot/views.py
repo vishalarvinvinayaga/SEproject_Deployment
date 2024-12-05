@@ -11,6 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
 from .scheduler import add_one_time_task, add_recurring_task, remove_task
 from django.views import View #type:ignore
 from django.utils.decorators import method_decorator #type:ignore
+import requests #type:ignore
 
 import logging
 logging.basicConfig(
@@ -160,3 +161,17 @@ def admin_logout(request):
         return JsonResponse({"message": "Logged out successfully."}, status=200)
 
     return JsonResponse({"error": "Invalid request method."}, status=400)
+
+
+
+
+def fetch_news(request):
+    news_api_url = "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=3a728d526e5349dd89913977b65f8280";
+    
+    try:
+        response = requests.get(news_api_url)
+        response.raise_for_status()  # Raise exception for HTTP errors
+        news_data = response.json()
+        return JsonResponse(news_data, safe=False)  # Return the API data as JSON
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({"error": str(e)}, status=500)

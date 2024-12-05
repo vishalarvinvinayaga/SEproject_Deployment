@@ -1,6 +1,6 @@
 from django.urls import path  # type: ignore
 from . import views
-from .views import ScheduleTaskView
+from .views import ScheduleTaskView, fetch_news
 
 app_name = "chatbot"
 
@@ -15,4 +15,5 @@ urlpatterns = [
     path("admin/scraping-schedule/", ScheduleTaskView.as_view(), name="schedule_task"),
     # to clear session history on reload
     path("reset-session/", views.reset_session, name="reset_session"),
+    path("fetch-news/", fetch_news, name="fetch_news"),
 ]
