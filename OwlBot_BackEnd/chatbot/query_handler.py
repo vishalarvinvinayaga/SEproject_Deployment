@@ -242,8 +242,5 @@ def get_response(user_query, chat_history):
     assistant_response = response.get("answer", "No answer found")
     clean_response = assistant_response.replace("System:", "").replace("Assistant:", "").strip()
 
-    # Update and manage chat history
-    # update_chat_history(chat_history, user_query, assistant_response)
-    # manage_chat_history(chat_history)
 
     return clean_response

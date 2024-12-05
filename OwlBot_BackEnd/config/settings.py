@@ -15,8 +15,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv  # type: ignore
 
-# import pymysql # type: ignore
-# pymysql.install_as_MySQLdb()
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,18 +27,11 @@ WEAVIATE_URL = os.getenv("WEAVIATE_URL")
 WEAVIATE_API_KEY = os.getenv("WEAVIATE_API_KEY")
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-3nf7wg*5m%t%1@=r=!b19=pq*71g&al5xkj$_gh0u*#3xt6fh8"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
 
-#ALLOWED_HOSTS = []
-
-# DEBUG = False
 ALLOWED_HOSTS = ["18.226.4.178", "main.dc3573mzvqc1c.amplifyapp.com","owlbot.chat","127.0.0.1",'localhost']  # Replace with actual values
 
 
@@ -108,19 +100,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",  # MySQL backend
-#         "NAME": "owlbot_backend",             # Database name
-#         "USER": "your_mysql_user",            # Replace with your MySQL username
-#         "PASSWORD": "your_mysql_password",    # Replace with your MySQL password
-#         "HOST": "127.0.0.1",                  # Use 'localhost' or '127.0.0.1' for local database
-#         "PORT": "3306",                       # MySQL port (default: 3306)
-#         "OPTIONS": {
-#             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-#         },
-#     }
-# }
 
 
 
@@ -155,22 +134,12 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-# STATIC_URL = "static/"
-# STATICFILES_DIRS = [BASE_DIR / "static"]
-# MEDIA_URL = "/media/"
-# MEDIA_ROOT = BASE_DIR / "media"
-
 STATICFILES_DIRS = []  # Remove or leave it empty
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Where `collectstatic` will gather files
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"  # Where uploaded files will be stored
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -195,18 +164,3 @@ CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = "None"  # Required for cross-origin cookies
 SESSION_COOKIE_SECURE = True  # Use True if using HTTPS
 SESSION_SAVE_EVERY_REQUEST = True
-
-#dont use this
-# SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Store session data in the database
-# SESSION_COOKIE_AGE = 3600  # 1 hour in seconds
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session ends when the browser is closed
-# SESSION_SAVE_EVERY_REQUEST = True  # Save session on every request
-
-#this is for local setup
-# SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Store sessions in the database
-# SESSION_COOKIE_AGE = 3600  # 1 hour in seconds
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Expire session when the browser is closed
-# SESSION_SAVE_EVERY_REQUEST = True
-# SESSION_COOKIE_SAMESITE = "Lax"  # Use "Lax" for local testing
-# SESSION_COOKIE_SECURE = False  # Set to False for local development (True for production with HTTPS)
-# CORS_ALLOW_CREDENTIALS = True

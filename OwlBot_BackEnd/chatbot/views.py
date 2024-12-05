@@ -22,45 +22,6 @@ logger = logging.getLogger(__name__)
 
 
 
-# @csrf_exempt
-# def chatbot_query(request):
-#     if request.method == "POST":
-#         try:
-#             # Parse JSON body
-#             data = json.loads(request.body)
-
-#             # Extract 'user_input' from JSON
-#             user_query = data.get("user_input")
-
-#             if user_query:
-#                 # Get chat history from session
-                
-#                 # if request.session['chat_history']:
-#                 #     logger.info(f"chat_history is present f{request.session['chat_history']}")
-#                 logger.info(f"Session Key at start: {request.session.session_key}")
-
-#                 chat_history = request.session.get("chat_history", [])
-#                 logger.info(f"views CHAT HISTORY: {chat_history}")
-                
-#                 # Process the query
-#                 response = get_response(user_query, chat_history)
-
-#                 # Update chat history
-#                 chat_history.append({"user": user_query, "assistant": response})
-                
-#                 # Save updated chat history in session
-#                 request.session['chat_history'] = chat_history
-#                 request.session.save()
-#                 logger.info(f"Session Key after save: {request.session.session_key}")
-#                 #logger.info(f"Session data after persisting: {request.session['chat_history']}")
-#                 return JsonResponse({"response": response})
-
-#             return JsonResponse({"error": "No input provided"}, status=400)
-#         except json.JSONDecodeError:
-#             return JsonResponse({"error": "Invalid JSON format"}, status=400)
-
-#     return JsonResponse({"error": "Invalid request method."}, status=400)
-
 @csrf_exempt
 def chatbot_query(request):
     if request.method == "POST":
@@ -109,35 +70,6 @@ def reset_session(request):
         logger.info(f"New Session Key: {request.session.session_key}")
         return JsonResponse({"message": "Session reset successfully"})
     return JsonResponse({"error": "Invalid request method"}, status=400)
-# @csrf_exempt
-# def chatbot_query(request):
-#     if request.method == "POST":
-#         try:
-#             # Reset session on every visit
-#             request.session.flush()  # Clears session and regenerates session key
-#             request.session.create()  # Creates a new session
-
-#             logger.info(f"New Session Key: {request.session.session_key}")
-
-#             # Parse JSON body
-#             data = json.loads(request.body)
-
-#             user_query = data.get("user_input")
-#             if user_query:
-#                 chat_history = request.session.get("chat_history", [])
-#                 response = get_response(user_query, chat_history)
-
-#                 chat_history.append({"user": user_query, "assistant": response})
-#                 request.session["chat_history"] = chat_history
-#                 return JsonResponse({"response": response})
-
-#             return JsonResponse({"error": "No input provided"}, status=400)
-#         except Exception as e:
-#             logger.error(f"Error in chatbot_query: {e}")
-#             return JsonResponse({"error": "Internal Server Error"}, status=500)
-
-#     return JsonResponse({"error": "Invalid request method."}, status=400)
-
 
 @csrf_exempt
 def admin_login(request):
