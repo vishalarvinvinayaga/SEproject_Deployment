@@ -1,9 +1,5 @@
 [
     {
-        "Name": "FAU",
-        "Link": "https://www.fau.edu"
-    },
-    {
         "Name": "FAU EECS",
         "Link": "https://www.fau.edu/engineering/eecs/"
     },
@@ -16,6 +12,14 @@
         "Link": "https://www.fau.edu/global/international/"
     },
     {
+        "Name": "Reduced Course Load",
+        "Link": "https://iss.fau.edu/istart/controllers/client/ClientEngine.cfm?serviceid=EFormReducedCourseLoadRCL0ServiceProvider&menuFlag=true"
+    },
+    {
+        "Name": "Letter Request Form",
+        "Link": "https://iss.fau.edu/istart/controllers/client/ClientEngine.cfm?serviceid=EFormLetterRequestForm0ServiceProvider&menuFlag=true"
+    },
+    {
         "Name": "ChatGPT",
         "Link": "https://chatgpt.com/"
     },
@@ -24,7 +28,7 @@
         "Link": "https://gemini.google.com/app"
     },
     {
-        "Name": "Grammerly",
+        "Name": "Grammarly",
         "Link": "https://app.grammarly.com/"
     }
 ]
