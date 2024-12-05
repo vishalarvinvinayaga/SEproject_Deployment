@@ -183,7 +183,6 @@ def setup_vector_database():
             response.append(get_professor_info(faculty))
             rpmDictionary[faculty] = response
             logger.info(f"Rate my professor fetched: {faculty}")
-            break
 
         for professor, details_list in rpmDictionary.items():
             for details in details_list:
