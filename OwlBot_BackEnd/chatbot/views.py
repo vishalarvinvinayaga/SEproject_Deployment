@@ -165,13 +165,13 @@ def admin_logout(request):
 
 
 
-def fetch_news(request):
-    news_api_url = "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=3a728d526e5349dd89913977b65f8280";
+# def fetch_news(request):
+#     news_api_url = "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=3a728d526e5349dd89913977b65f8280";
     
-    try:
-        response = requests.get(news_api_url)
-        response.raise_for_status()  # Raise exception for HTTP errors
-        news_data = response.json()
-        return JsonResponse(news_data, safe=False)  # Return the API data as JSON
-    except requests.exceptions.RequestException as e:
-        return JsonResponse({"error": str(e)}, status=500)
+#     try:
+#         response = requests.get(news_api_url)
+#         response.raise_for_status()  # Raise exception for HTTP errors
+#         news_data = response.json()
+#         return JsonResponse(news_data, safe=False)  # Return the API data as JSON
+#     except requests.exceptions.RequestException as e:
+#         return JsonResponse({"error": str(e)}, status=500)

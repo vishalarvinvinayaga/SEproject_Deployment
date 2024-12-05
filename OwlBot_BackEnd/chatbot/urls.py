@@ -15,5 +15,5 @@ urlpatterns = [
     path("admin/scraping-schedule/", ScheduleTaskView.as_view(), name="schedule_task"),
     # to clear session history on reload
     path("reset-session/", views.reset_session, name="reset_session"),
-    path("fetch-news/", fetch_news, name="fetch_news"),
+    
 ]
