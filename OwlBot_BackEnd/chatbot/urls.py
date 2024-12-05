@@ -1,6 +1,6 @@
 from django.urls import path  # type: ignore
 from . import views
-from .views import ScheduleTaskView, fetch_news
+from .views import ScheduleTaskView
 
 app_name = "chatbot"
 
