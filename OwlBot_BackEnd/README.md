@@ -37,8 +37,6 @@ The **OwlBot** project is a chatbot designed to provide information about FAU's 
 
 ## Deployment Steps
 
-### 1. Clone the Repository
-
 ```bash
 sudo apt update
 
